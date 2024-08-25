@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const patientRoutes = require("./routes/patient.routes");
 const billingRoutes = require("./routes/billing.routes");
 const doctorRecordRoutes = require("./routes/doctorRecord.routes");
+const excelRoutes = require("./routes/excel.routes");
+
 const cors = require("cors");
 
 dotenv.config();
@@ -22,6 +24,7 @@ app.use("/api/prescription", prescriptionRoutes);
 app.use("/api", patientRoutes);
 app.use("/api", billingRoutes);
 app.use("/api/doctor-records", doctorRecordRoutes);
+app.use("/api/excel", excelRoutes);
 
 // Database Connection
 mongoose
