@@ -1,5 +1,12 @@
 const mongoose = require("mongoose");
 
+const followUpSchema = new mongoose.Schema({
+  date: { type: Date, required: true },
+  reason: { type: String, required: true },
+  doctorName: { type: String, required: true },
+  consultationFee: { type: Number, required: true },
+});
+
 const PatientSchema = new mongoose.Schema(
   {
     name: {
@@ -18,6 +25,7 @@ const PatientSchema = new mongoose.Schema(
     phone: {
       type: String,
       required: true,
+      unique: true,
     },
     email: {
       type: String,
@@ -44,7 +52,10 @@ const PatientSchema = new mongoose.Schema(
     consultationFee : {
         type: Number,
         required: true,
-    }
+    },
+
+    followUps: [followUpSchema], // Adding the followUps field
+
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields

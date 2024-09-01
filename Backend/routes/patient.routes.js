@@ -8,6 +8,8 @@ router.post("/patients", patientController.createPatient);
 // Get all patients
 router.get("/patients", patientController.getAllPatients);
 
+router.post("/followup", patientController.createFollowUp);
+
 // Get a patient by ID
 router.get("/patients/:id", patientController.getPatientById);
 

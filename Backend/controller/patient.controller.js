@@ -1,10 +1,39 @@
 const Patient = require("../models/Patient.model");
+const cloudinary = require('cloudinary').v2;
 
 // Create a new patient
+const uploadReport = async (file) => {
+  const image = await cloudinary.uploader.upload(file, {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+  return image;
+};
+
 exports.createPatient = async (req, res) => {
   try {
-    const { name, age, sex, phone, email, consent, visited,doctorName ,reports , consultationFee } =
-      req.body;
+    const { name, age, sex, phone, email, consent, visited, doctorName, consultationFee } = req.body;
+    
+    // Upload reports if any
+    const reportFiles = req.files?.reports;
+
+// Ensure reportFiles is always an array
+const normalizedReportFiles = Array.isArray(reportFiles) ? reportFiles : [reportFiles];
+
+console.log(normalizedReportFiles.length);
+
+const reportUrls = [];
+
+if (normalizedReportFiles.length > 0) {
+  for (const file of normalizedReportFiles) {
+    const cloudFile = await uploadReport(file.tempFilePath);
+    console.log(cloudFile.secure_url);
+    reportUrls.push(cloudFile.secure_url);
+  }
+}
+
+    // Create new patient
     const newPatient = new Patient({
       name,
       age,
@@ -14,15 +43,47 @@ exports.createPatient = async (req, res) => {
       consent,
       visited,
       doctorName,
-      reports,
+      reports: reportUrls, // Save the report URLs
       consultationFee,
     });
+
     const savedPatient = await newPatient.save();
     res.status(201).json(savedPatient);
   } catch (error) {
     res.status(500).json({ message: "Error creating patient", error });
   }
 };
+
+
+exports.createFollowUp = async (req, res) => {
+  try {
+    const { phone, followUpDate, followUpReason, doctorName, consultationFee } = req.body;
+
+    // Check if the patient exists
+    const existingPatient = await Patient.findOne({ phone });
+
+    if (!existingPatient) {
+      return res.status(404).json({ message: "Patient not found. Please create a new patient record first." });
+    }
+
+    // If patient exists, create a follow-up entry
+    const followUp = {
+      date: followUpDate,
+      reason: followUpReason,
+      doctorName,
+      consultationFee,
+    };
+
+    existingPatient.followUps = existingPatient.followUps || [];
+    existingPatient.followUps.push(followUp);
+
+    const updatedPatient = await existingPatient.save();
+    res.status(201).json(updatedPatient);
+  } catch (error) {
+    res.status(500).json({ message: "Error creating follow-up", error });
+  }
+};
+
 
 // Get all patients
 exports.getAllPatients = async (req, res) => {
@@ -79,3 +140,7 @@ exports.deletePatient = async (req, res) => {
     res.status(500).json({ message: "Error deleting patient", error });
   }
 };
+
+
+
+
