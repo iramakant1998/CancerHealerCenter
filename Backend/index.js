@@ -7,6 +7,8 @@ const billingRoutes = require("./routes/billing.routes");
 const doctorRecordRoutes = require("./routes/doctorRecord.routes");
 const excelRoutes = require("./routes/excel.routes");
 const cancerExcelRoutes = require("./routes/cancerExcel.routes");
+const vitalRoutes = require("./routes/vital.routes");
+
 const fileUpload = require("express-fileupload");
 
 const cors = require("cors");
@@ -31,6 +33,7 @@ app.use("/api", billingRoutes);
 app.use("/api/doctor-records", doctorRecordRoutes);
 app.use("/api/excel", excelRoutes);
 app.use("/api/canceExcel", cancerExcelRoutes);
+app.use("/api/vital", vitalRoutes);
 
 // Database Connection
 mongoose
