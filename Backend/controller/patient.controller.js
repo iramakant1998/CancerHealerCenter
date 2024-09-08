@@ -57,10 +57,10 @@ if (normalizedReportFiles.length > 0) {
 
 exports.createFollowUp = async (req, res) => {
   try {
-    const { phone, followUpReason, doctorName, consultationFee } = req.body;
+     const { phone, followUpReason, doctorName, consultationFee } = req.body;
 
     // Check if the patient exists
-    const existingPatient = await Patient.findOne({ phone });
+    const existingPatient = await Patient.findOne({ phone:req.body.phone });
 
     if (!existingPatient) {
       return res.status(404).json({ message: "Patient not found. Please create a new patient record first." });
@@ -83,7 +83,6 @@ exports.createFollowUp = async (req, res) => {
     }
     // If patient exists, create a follow-up entry
     const followUp = {
-      date: followUpDate,
       reason: followUpReason,
       doctorName,
       consultationFee,
