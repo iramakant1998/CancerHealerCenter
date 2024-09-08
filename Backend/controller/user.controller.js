@@ -155,8 +155,10 @@ exports.updatePassword = async (req, res) => {
 
 exports.updateLoginPassword = async (req, res) => {
   try {
-    const { phone ,currentPassword, newPassword } = req.body;
-    const user = await User.findOne( {phone} ).select("+password");
+    const { email ,currentPassword, newPassword } = req.body;
+    const user = await User.findOne({ email }).select("+password");;
+
+    // const user = await User.findOne( {phone} ).select("+password");
     // check current password //
     if (!(await user.matchPassword(currentPassword))) {
       CreateNotification(
