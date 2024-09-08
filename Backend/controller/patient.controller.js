@@ -86,9 +86,9 @@ exports.createFollowUp = async (req, res) => {
       reason: followUpReason,
       doctorName,
       consultationFee,
+      reports:reportUrls
     };
 
-    existingPatient.reports= reportUrls
     existingPatient.followUps = existingPatient.followUps || [];
     existingPatient.followUps.push(followUp);
 
