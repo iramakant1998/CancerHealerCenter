@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const followUpSchema = new mongoose.Schema({
-  date: { type: Date, required: true },
   reason: { type: String, required: true },
   doctorName: { type: String, required: true },
   consultationFee: { type: Number, required: true },
@@ -10,6 +9,9 @@ const followUpSchema = new mongoose.Schema({
       type: String, // Assuming file paths or URLs for uploaded reports
     },
   ],
+},
+{
+  timestamps: true,
 });
 
 const PatientSchema = new mongoose.Schema(

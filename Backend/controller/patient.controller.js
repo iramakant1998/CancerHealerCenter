@@ -57,7 +57,7 @@ if (normalizedReportFiles.length > 0) {
 
 exports.createFollowUp = async (req, res) => {
   try {
-    const { phone, followUpDate, followUpReason, doctorName, consultationFee } = req.body;
+    const { phone, followUpReason, doctorName, consultationFee } = req.body;
 
     // Check if the patient exists
     const existingPatient = await Patient.findOne({ phone });
@@ -88,7 +88,7 @@ exports.createFollowUp = async (req, res) => {
       doctorName,
       consultationFee,
     };
-    
+
     existingPatient.reports= reportUrls
     existingPatient.followUps = existingPatient.followUps || [];
     existingPatient.followUps.push(followUp);
