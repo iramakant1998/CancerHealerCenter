@@ -8,7 +8,7 @@ const doctorRecordRoutes = require("./routes/doctorRecord.routes");
 const excelRoutes = require("./routes/excel.routes");
 const cancerExcelRoutes = require("./routes/cancerExcel.routes");
 const vitalRoutes = require("./routes/vital.routes");
-
+const userRoutes = require("./routes/user.routes");
 const fileUpload = require("express-fileupload");
 
 const cors = require("cors");
@@ -27,6 +27,8 @@ app.use(fileUpload({
 }));
 // Routes
 const prescriptionRoutes = require("./routes/prescriptionroutes");
+
+app.use("/api/users", userRoutes);
 app.use("/api/prescription", prescriptionRoutes);
 app.use("/api", patientRoutes);
 app.use("/api", billingRoutes);

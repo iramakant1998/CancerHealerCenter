@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Backend",
+            "program": "${workspaceFolder}/Backend/index.js", // Change to your actual entry file
+            "cwd": "${workspaceFolder}/Backend", // Set the working directory to the backend folder
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["start"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Backend",
+            "port": 9229,
+            "restart": true,
+            "skipFiles": ["<node_internals>/**"]
+        }
+    ]
+}
