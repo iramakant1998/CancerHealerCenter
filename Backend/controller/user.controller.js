@@ -4,6 +4,14 @@ const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 const nodemailer = require("nodemailer");
 exports.createUser = async (req, res) => {
   try {
+    const userRole = req.user?.role;  // or however you retrieve the role
+
+    if (userRole !== 'ADMIN') {
+      return res.status(403).json({
+        success: false,
+        message: "Only admin users can create new users.",
+      });
+    }
     const { email, phone } = req.body;
     const Checkuser = await User.find({
       $or: [{ email: email }, { phone: phone }],
@@ -145,6 +153,41 @@ exports.updatePassword = async (req, res) => {
   }
 };
 
+exports.updateLoginPassword = async (req, res) => {
+  try {
+    const { phone ,currentPassword, newPassword } = req.body;
+    const user = await User.findOne( {phone} ).select("+password");
+    // check current password //
+    if (!(await user.matchPassword(currentPassword))) {
+      CreateNotification(
+        user._id,
+        "You Entered Incorrect Password While Updating Password"
+      );
+      res.status(400).json({
+        sucess: false,
+        massage: "Password Is Incorrect",
+      });
+      return;
+    } else {
+      if (currentPassword === newPassword) {
+        res.status(400).json({
+          sucess: false,
+          massage: "Both Password Are Same",
+        });
+        return;
+      } else {
+        user.password = newPassword;
+        await user.save();
+        sendTokenResponse(user, 200, res);
+      }
+    }
+  } catch (error) {
+    res.status(400).json({
+      sucess: false,
+      massage: error,
+    });
+  }
+};
 exports.forgotPassword = async (req, res) => {
   try {
     const email = req.body.email;
