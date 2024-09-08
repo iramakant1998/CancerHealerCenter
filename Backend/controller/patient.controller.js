@@ -65,7 +65,22 @@ exports.createFollowUp = async (req, res) => {
     if (!existingPatient) {
       return res.status(404).json({ message: "Patient not found. Please create a new patient record first." });
     }
+    const reportFiles = req.files?.reports;
 
+    // Ensure reportFiles is always an array
+    const normalizedReportFiles = Array.isArray(reportFiles) ? reportFiles : [reportFiles];
+    
+    console.log(normalizedReportFiles.length);
+    
+    const reportUrls = [];
+    
+    if (normalizedReportFiles.length > 0) {
+      for (const file of normalizedReportFiles) {
+        const cloudFile = await uploadReport(file.tempFilePath);
+        console.log(cloudFile.secure_url);
+        reportUrls.push(cloudFile.secure_url);
+      }
+    }
     // If patient exists, create a follow-up entry
     const followUp = {
       date: followUpDate,
@@ -73,7 +88,8 @@ exports.createFollowUp = async (req, res) => {
       doctorName,
       consultationFee,
     };
-
+    
+    existingPatient.reports= reportUrls
     existingPatient.followUps = existingPatient.followUps || [];
     existingPatient.followUps.push(followUp);
 

@@ -5,6 +5,11 @@ const followUpSchema = new mongoose.Schema({
   reason: { type: String, required: true },
   doctorName: { type: String, required: true },
   consultationFee: { type: Number, required: true },
+  reports: [
+    {
+      type: String, // Assuming file paths or URLs for uploaded reports
+    },
+  ],
 });
 
 const PatientSchema = new mongoose.Schema(
