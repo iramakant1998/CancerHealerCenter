@@ -4,7 +4,7 @@ const Patient = require("../models/Patient.model");
 // Create a new doctor record
 exports.createDoctorRecord = async (req, res) => {
   try {
-    const { phone, caseHistory, medicalHistory, vitals, symptoms, notes } =
+    const { phone, caseHistory, medicalHistory, vitals, symptoms, notes, nextFollowUpDate } =
       req.body;
 
     // Fetch patient details from the Patient collection
@@ -20,9 +20,21 @@ exports.createDoctorRecord = async (req, res) => {
       vitals,
       symptoms,
       notes,
+      nextFollowUpDate
     });
 
     const savedDoctorRecord = await newDoctorRecord.save();
+
+    patient.doctorFollowUp.push({
+      caseHistory,
+      medicalHistory,
+      vitals,
+      symptoms,
+      notes,
+      nextFollowUpDate
+    });
+
+    await patient.save();
     res.status(201).json(savedDoctorRecord);
   } catch (error) {
     res.status(500).json({ message: "Error creating doctor record", error });

@@ -9,8 +9,19 @@ const followUpSchema = new mongoose.Schema({
       type: String, // Assuming file paths or URLs for uploaded reports
     },
   ],
-},
-{
+}, {
+  timestamps: true,
+});
+
+const doctorFollowUpSchema = new mongoose.Schema({
+  caseHistory: { type: String, required: true },
+  medicalHistory: { type: String, required: true },
+  vitals: { type: String, required: true },
+  symptoms: { type: String, required: true },
+  notes: { type: String },
+  nextFollowUpDate: { type: Date }
+
+}, {
   timestamps: true,
 });
 
@@ -56,13 +67,12 @@ const PatientSchema = new mongoose.Schema(
         type: String, // Assuming file paths or URLs for uploaded reports
       },
     ],
-    consultationFee : {
-        type: Number,
-        required: true,
+    consultationFee: {
+      type: Number,
+      required: true,
     },
-
-    followUps: [followUpSchema], // Adding the followUps field
-
+    followUps: [followUpSchema], // Field for follow-up entries
+    doctorFollowUp: [doctorFollowUpSchema], // New field for doctor follow-up records
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields

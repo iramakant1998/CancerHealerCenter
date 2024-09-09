@@ -16,23 +16,7 @@ const DoctorRecordSchema = new mongoose.Schema(
         type: String,
       },
     },
-    vitals: {
-      bloodPressure: {
-        type: String,
-      },
-      height: {
-        type: Number,
-      },
-      weight: {
-        type: Number,
-      },
-      sugar: {
-        type: Number,
-      },
-      others: {
-        type: String,
-      },
-    },
+   
     symptoms: {
       type: String,
       required: true,
@@ -40,7 +24,11 @@ const DoctorRecordSchema = new mongoose.Schema(
     notes: {
       type: String,
     },
+    
+    nextFollowUpDate: { type: Date }, // New field for next follow-up date
+
   },
+  
   {
     timestamps: true, // Adds createdAt and updatedAt fields
   }
