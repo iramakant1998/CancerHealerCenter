@@ -10,7 +10,8 @@ const {
   updateDetails,
   updatePassword,
   deleteUserAccount,
-  updateLoginPassword
+  updateLoginPassword,
+  getAllDoctors
 } = require("../controller/user.controller");
 
 const { protect } = require("../middlewares/auth");
@@ -27,6 +28,7 @@ router.route("/update-credentials").put(updateLoginPassword);
 router.route("/update-password").put(protect, updatePassword);
 router.route("/delete").delete(protect, deleteAccount);
 router.route("/deleteUser/:id").delete(protect, deleteUserAccount);
+router.route("/doctors").get(getAllDoctors);
 
 
 router.route("/getAllUsers").get( getAllUsers);

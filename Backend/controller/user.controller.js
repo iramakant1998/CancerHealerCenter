@@ -317,3 +317,16 @@ exports.deleteUserAccount = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.getAllDoctors = async (req, res) => {
+  try {
+    const doctors = await User.find({ role: "DOCTOR" });
+    res.status(200).json({
+      success: true,
+      data: doctors,
+      
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
