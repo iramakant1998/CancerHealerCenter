@@ -25,7 +25,7 @@ console.log(normalizedReportFiles.length);
 
 const reportUrls = [];
 
-if (normalizedReportFiles.length > 0) {
+if (normalizedReportFiles.length > 0 && normalizedReportFiles[0] !== undefined) {
   for (const file of normalizedReportFiles) {
     const cloudFile = await uploadReport(file.tempFilePath);
     console.log(cloudFile.secure_url);
