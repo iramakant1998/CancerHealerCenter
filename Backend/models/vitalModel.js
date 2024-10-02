@@ -27,3 +27,4 @@ const VitalsSchema = new mongoose.Schema(
 const Vitals = mongoose.model("Vitals", VitalsSchema);
 
 module.exports = Vitals;
+

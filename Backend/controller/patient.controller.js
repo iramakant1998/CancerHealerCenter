@@ -1,5 +1,6 @@
 const Patient = require("../models/Patient.model");
 const cloudinary = require('cloudinary').v2;
+const Vitals = require("../models/vitalModel");
 
 // Create a new patient
 const uploadReport = async (file) => {
@@ -113,8 +114,8 @@ exports.getAllPatients = async (req, res) => {
 // Get a patient by ID
 exports.getPatientById = async (req, res) => {
   try {
-    const patient = await Patient.findById(req.params.id);
-    if (!patient) {
+    const patient = await Patient.findById(req.params.id).populate('vitals');
+        if (!patient) {
       return res.status(404).json({ message: "Patient not found" });
     }
     res.status(200).json(patient);

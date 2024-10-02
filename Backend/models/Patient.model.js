@@ -72,7 +72,9 @@ const PatientSchema = new mongoose.Schema(
       required: true,
     },
     followUps: [followUpSchema], // Field for follow-up entries
-    doctorFollowUp: [doctorFollowUpSchema], // New field for doctor follow-up records
+    doctorFollowUp: [doctorFollowUpSchema],
+    vitals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vitals' }], // Vitals reference
+    // New field for doctor follow-up records
   },
   {
     timestamps: true, // Adds createdAt and updatedAt fields
