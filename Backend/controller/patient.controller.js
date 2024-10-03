@@ -46,6 +46,7 @@ if (normalizedReportFiles.length > 0 && normalizedReportFiles[0] !== undefined) 
       doctorName,
       reports: reportUrls, // Save the report URLs
       consultationFee,
+      is_reception: true
     });
 
     const savedPatient = await newPatient.save();

@@ -34,6 +34,9 @@ exports.createDoctorRecord = async (req, res) => {
       nextFollowUpDate
     });
 
+    patient.is_doctor = true;
+
+
     await patient.save();
     res.status(201).json(savedDoctorRecord);
   } catch (error) {

@@ -2,16 +2,27 @@ const User = require("../models/user.model");
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_REFRESH_TOKEN = process.env.JWT_REFRESH_TOKEN;
 const nodemailer = require("nodemailer");
+const cloudinary = require('cloudinary').v2;
+
+const uploadImage = async (file) => {
+  const image = await cloudinary.uploader.upload(file, {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+  return image;
+};
 exports.createUser = async (req, res) => {
   try {
-    const userRole = req.user?.role;  // or however you retrieve the role
+    // const userRole = req.user?.role;  // or however you retrieve the role
 
-    if (userRole !== 'ADMIN') {
-      return res.status(403).json({
-        success: false,
-        message: "Only admin users can create new users.",
-      });
-    }
+    // if (userRole !== 'ADMIN') {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: "Only admin users can create new users.",
+    //   });
+    // }
+
     const { email, phone } = req.body;
     const Checkuser = await User.find({
       $or: [{ email: email }, { phone: phone }],
@@ -23,13 +34,22 @@ exports.createUser = async (req, res) => {
         massage: "Email Or Phone No. Already Exit",
       });
     } else {
-      const user = await User.create(req.body);
+      let imageUrl = null;
+
+    if (req.files?.image) {
+      const image = req.files.image;
+      const uploadedImage = await uploadImage(image.tempFilePath);
+      imageUrl = uploadedImage.secure_url;
+    }
+    const newUser = await User.create({
+      ...req.body,
+      image: imageUrl
+    });
 
       res.status(201).json({
         STATUS_MESSAGE: "SUCCESS",
-
         success: true,
-        data: user,
+        data: newUser,
       });
     }
   } catch (error) {

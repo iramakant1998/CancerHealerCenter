@@ -25,12 +25,17 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["DOCTOR", "PHARMASIST", "ADMIN", "RECEPTIONIST"],
+      enum: ["DOCTOR", "PHARMASIST", "ADMIN", "RECEPTIONIST", "NURSING"],
     //   default: "ADMIN",
     },
 
     password: {
       type: String,
+    },
+
+    image: {
+      type: String, 
+      default: null,
     },
    
   

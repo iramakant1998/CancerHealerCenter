@@ -74,6 +74,9 @@ const PatientSchema = new mongoose.Schema(
     followUps: [followUpSchema], // Field for follow-up entries
     doctorFollowUp: [doctorFollowUpSchema],
     vitals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Vitals' }], // Vitals reference
+    is_doctor: { type: Boolean, default: false },
+    is_reception: { type: Boolean, default: false },
+    is_vitals: { type: Boolean, default: false }
     // New field for doctor follow-up records
   },
   {

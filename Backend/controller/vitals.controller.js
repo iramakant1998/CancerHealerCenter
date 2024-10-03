@@ -23,7 +23,10 @@ exports.addVitals = async (req, res) => {
     
     await Patient.findByIdAndUpdate(
       patient._id,
-      { $push: { vitals: newVitals._id } },
+      { 
+        $push: { vitals: newVitals._id },
+        is_vitals: true
+      },
       { new: true }
     );
     
