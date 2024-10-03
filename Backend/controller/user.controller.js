@@ -14,14 +14,14 @@ const uploadImage = async (file) => {
 };
 exports.createUser = async (req, res) => {
   try {
-    // const userRole = req.user?.role;  // or however you retrieve the role
+    const userRole = req.user?.role;  // or however you retrieve the role
 
-    // if (userRole !== 'ADMIN') {
-    //   return res.status(403).json({
-    //     success: false,
-    //     message: "Only admin users can create new users.",
-    //   });
-    // }
+    if (userRole !== 'ADMIN') {
+      return res.status(403).json({
+        success: false,
+        message: "Only admin users can create new users.",
+      });
+    }
 
     const { email, phone } = req.body;
     const Checkuser = await User.find({
